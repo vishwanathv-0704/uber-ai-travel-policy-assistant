@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Travel & Policy Assistant</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <header>
+        <h1>AI Travel & Policy Assistant</h1>
+        <p>Uber for Business</p>
+    </header>
+
+    <section class="card">
+
+        <label for="employeeId">Employee ID</label>
+
+        <input
+            type="text"
+            id="employeeId"
+            placeholder="Example: EMP001"
+        >
+
+        <label for="question">Ask your question</label>
+
+        <textarea
+            id="question"
+            placeholder="Example: Can I take an airport trip?"
+        ></textarea>
+
+        <div class="buttons">
+
+            <button onclick="askAssistant()">
+                Ask Assistant
+            </button>
+
+            <button class="clear-btn" onclick="clearConversation()">
+                Clear Conversation
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <section class="card">
+
+        <h2>Assistant Response</h2>
+
+        <div id="response" class="response">
+            Ask a question to get started.
+        </div>
+
+    </section>
+
+
+    <section class="card">
+
+        <h2>Conversation History</h2>
+
+        <pre id="history">No conversation yet.</pre>
+
+    </section>
+
+
+    <section class="card">
+
+        <h2>System Status</h2>
+
+        <div id="status">
+            Checking...
+        </div>
+
+    </section>
+
+</div>
+
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
+</body>
+</html>

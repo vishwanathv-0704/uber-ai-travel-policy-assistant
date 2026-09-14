@@ -40,7 +40,6 @@ def ask_ollama(prompt):
 # ============================================================
 # TOOL SELECTION
 # ============================================================
-
 def select_tool(user_query):
     """
     Ask the LLM which tool should be used and extract
@@ -60,9 +59,52 @@ You have access to exactly these tools:
      needs approval, or is within the travel spending limit.
 
 3. calculate_reimbursement
-   - Use when the user asks how much of an expense can be reimbursed.
+   - Use ONLY when the user explicitly asks about reimbursement,
+     reimbursable amount, or how much money will be reimbursed
+     for an expense.
 
-Read the user's request and return ONLY valid JSON.
+IMPORTANT FOLLOW-UP RULE:
+
+Use the previous conversation to understand follow-up questions.
+
+If the previous conversation establishes a specific trip
+(for example, an airport trip) and the user then asks about
+the cost/amount of that trip, use validate_trip.
+
+Example:
+
+Previous:
+"Can I take an airport trip?"
+
+Follow-up:
+"What if it costs 2500?"
+
+Correct tool:
+validate_trip
+
+Do NOT use calculate_reimbursement for this situation.
+
+Another example:
+
+Previous:
+"Can I take an airport trip?"
+
+Follow-up:
+"Would 2500 require approval?"
+
+Correct tool:
+validate_trip
+
+Only use calculate_reimbursement when the user explicitly asks
+something like:
+
+"How much will I be reimbursed?"
+
+"What amount is reimbursable?"
+
+"How much of my expense can I claim?"
+
+Return ONLY valid JSON.
 
 JSON format:
 
@@ -77,7 +119,15 @@ JSON format:
     }}
 }}
 
-Only include arguments that are relevant to the selected tool.
+Rules for arguments:
+
+- Preserve the employee ID from the conversation if available.
+- Preserve the trip type from the previous conversation if available.
+- If a follow-up provides an amount, use that amount.
+- For a trip-cost follow-up, use validate_trip.
+- Only include arguments relevant to the selected tool.
+- Do not invent values.
+- If a value is genuinely unavailable, leave it empty or omit it.
 
 If the request does not match any tool, return:
 
@@ -87,6 +137,7 @@ If the request does not match any tool, return:
 }}
 
 User request:
+
 {user_query}
 """
 
@@ -94,11 +145,14 @@ User request:
 
     try:
         return json.loads(result)
+
     except json.JSONDecodeError:
         return {
             "tool": "none",
             "arguments": {}
         }
+
+   
 
 
 # ============================================================
