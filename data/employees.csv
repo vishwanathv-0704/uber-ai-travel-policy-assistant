@@ -1,0 +1,9 @@
+employee_id,country,employee_type,department,eligibility_status
+EMP001,India,Full-Time,Engineering,Eligible
+EMP002,India,Full-Time,Finance,Eligible
+EMP003,India,Contractor,Operations,Not Eligible
+EMP004,United States,Full-Time,Engineering,Eligible
+EMP005,United States,Part-Time,HR,Not Eligible
+EMP006,India,Full-Time,Sales,Eligible
+EMP007,United States,Full-Time,Finance,Eligible
+EMP008,India,Contractor,Engineering,Not Eligible
